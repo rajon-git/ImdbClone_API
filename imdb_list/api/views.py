@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from .serializers import MovieSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 # Create your views here.
 @api_view(['GET','POST'])
@@ -23,12 +24,18 @@ def movie_list(request):
 @api_view(['GET','PUT','DELETE'])
 def movie_details(request,id):
     if request.method == 'GET':
-        movie = Movie.objects.get(pk=id)
+        try:
+            movie = Movie.objects.get(pk=id)
+        except Movie.DoesNotExist:
+            return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
     
     if request.method == 'PUT':
-        movie = Movie.objects.get(pk=id)
+        try:
+            movie = Movie.objects.get(pk=id)
+        except Movie.DoesNotExist:
+            return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = MovieSerializer(movie,data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -37,6 +44,9 @@ def movie_details(request,id):
             return Response(serializer.errors, status=400)
         
     if request.method == 'DELETE':
-        movie = Movie.objects.get(pk=id)
+        try:
+            movie = Movie.objects.get(pk=id)
+        except Movie.DoesNotExist:
+            return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
         movie.delete()
-        return Response({'message': f'{movie.name} removed successfully'})
+        return Response({'message': f'{movie.name} removed successfully'}, status=status.HTTP_204_NO_CONTENT)
