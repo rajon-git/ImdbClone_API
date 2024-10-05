@@ -20,7 +20,7 @@ def movie_list(request):
         else:
             return Response(serializer.errors, status=400)
 
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
 def movie_details(request,id):
     if request.method == 'GET':
         movie = Movie.objects.get(pk=id)
@@ -35,3 +35,8 @@ def movie_details(request,id):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=400)
+        
+    if request.method == 'DELETE':
+        movie = Movie.objects.get(pk=id)
+        movie.delete()
+        return Response({'message': f'{movie.name} removed successfully'})
