@@ -20,8 +20,18 @@ def movie_list(request):
         else:
             return Response(serializer.errors, status=400)
 
-@api_view()
+@api_view(['GET','PUT'])
 def movie_details(request,id):
-    movie = Movie.objects.get(pk=id)
-    serializer = MovieSerializer(movie)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        movie = Movie.objects.get(pk=id)
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)
+    
+    if request.method == 'PUT':
+        movie = Movie.objects.get(pk=id)
+        serializer = MovieSerializer(movie,data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
