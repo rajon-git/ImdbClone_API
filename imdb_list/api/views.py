@@ -30,6 +30,18 @@ class MovieDetailAV(APIView):
             return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
+
+    def put(self,request,id):
+        try:
+            movie = Movie.objects.get(pk=id)
+        except Movie.DoesNotExist:
+            return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = MovieSerializer(movie, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
 # function based view
 # @api_view(['GET','POST'])
 # def movie_list(request):
