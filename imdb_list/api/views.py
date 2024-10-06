@@ -42,6 +42,14 @@ class MovieDetailAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=400)
+
+    def delete(self,requet,id):
+        try:
+            movie = Movie.objects.get(pk=id)
+        except Movie.DoesNotExist:
+            return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
+        movie.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 # function based view
 # @api_view(['GET','POST'])
 # def movie_list(request):
