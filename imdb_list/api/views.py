@@ -20,7 +20,7 @@ class MovieListAV(APIView):
             serializer.save()
             return Response(serializer.data, status=201)
         else:
-            return Response(serializer.errors, ststus=400)
+            return Response(serializer.errors, status=400)
 
 class MovieDetailAV(APIView):
     def get(self,request,id):
