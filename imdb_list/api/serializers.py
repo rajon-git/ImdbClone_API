@@ -2,11 +2,15 @@ from rest_framework import serializers
 from imdb_list.models import Movie
 
 class MovieSerializer(serializers.ModelSerializer):
+    len_name = serializers.SerializerMethodField()
     class Meta:
         model = Movie
         fields = "__all__"  #if i want all fields to show then write this 
         # fields = ['id','name','description']  #if i want to show some selected fields 
         # exclude = ['name']  #if i want dont show selected fields 
+
+    def get_len_name(self,object):
+        return len(object.name)
         
     def validate_name(self,value):
         if len(value) < 2:
