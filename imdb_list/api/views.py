@@ -1,13 +1,19 @@
 from django.shortcuts import render
-from imdb_list.models import WatchList
+from imdb_list.models import WatchList, StreamPlatform
 from django.http import JsonResponse
-from .serializers import WatchListSerializer
+from .serializers import WatchListSerializer, StreamPlatformSerializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.views import APIView
 
 # class based view
+class StreamPlatformAV(APIView):
+    def get(self,request):
+        platform = StreamPlatform.objects.all()
+        serializer = StreamPlatformSerializers(platform, many=True)
+        return Response(serializer.data)
+    
 class WatchListAV(APIView):
 
     def get(self,request):
