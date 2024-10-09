@@ -14,6 +14,14 @@ class StreamPlatformAV(APIView):
         serializer = StreamPlatformSerializers(platform, many=True)
         return Response(serializer.data)
     
+    def post(self,request):
+        serialiser = StreamPlatformSerializers(data = request.data)
+        if serialiser.is_valid():
+            serialiser.save()
+            return Response(serialiser.data, status=201)
+        else:
+            return Response(serialiser.errors, status=400)
+    
 class WatchListAV(APIView):
 
     def get(self,request):
