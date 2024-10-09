@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from imdb_list.models import Movie
+from imdb_list.models import WatchList
 
-class MovieSerializer(serializers.ModelSerializer):
+class WatchListSerializer(serializers.ModelSerializer):
     len_name = serializers.SerializerMethodField()
     class Meta:
-        model = Movie
+        model = WatchList
         fields = "__all__"  #if i want all fields to show then write this 
         # fields = ['id','name','description']  #if i want to show some selected fields 
         # exclude = ['name']  #if i want dont show selected fields 

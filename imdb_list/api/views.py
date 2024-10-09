@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from imdb_list.models import WatchList
 from django.http import JsonResponse
-from .serializers import MovieSerializer
+from .serializers import WatchListSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -12,11 +12,11 @@ class WatchListAV(APIView):
 
     def get(self,request):
         movies = WatchList.objects.all()
-        serializer = MovieSerializer(movies, many=True)
+        serializer = WatchListSerializer(movies, many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer = MovieSerializer(data= request.data)
+        serializer = WatchListSerializer(data= request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
@@ -29,7 +29,7 @@ class WatchListDetailAV(APIView):
             movie = WatchList.objects.get(pk=id)
         except WatchList.DoesNotExist:
             return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = MovieSerializer(movie)
+        serializer = WatchListSerializer(movie)
         return Response(serializer.data)
 
     def put(self,request,id):
@@ -37,7 +37,7 @@ class WatchListDetailAV(APIView):
             movie = WatchList.objects.get(pk=id)
         except WatchList.DoesNotExist:
             return Response({'Error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = MovieSerializer(movie, data=request.data)
+        serializer = WatchListSerializer(movie, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
