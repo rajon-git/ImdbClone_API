@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from imdb_list.models import WatchList, StreamPlatform
 
-class StreamPlatformSerializers(serializers.ModelSerializers):
+class StreamPlatformSerializers(serializers.ModelSerializer):
     class Meta:
         model = StreamPlatform
         fields = "__all__"
-        
+
 class WatchListSerializer(serializers.ModelSerializer):
     len_name = serializers.SerializerMethodField()
     class Meta:
