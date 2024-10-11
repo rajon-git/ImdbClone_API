@@ -1,11 +1,6 @@
 from rest_framework import serializers
 from imdb_list.models import WatchList, StreamPlatform
 
-class StreamPlatformSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = StreamPlatform
-        fields = "__all__"
-
 class WatchListSerializer(serializers.ModelSerializer):
     len_name = serializers.SerializerMethodField()
     class Meta:
@@ -28,6 +23,12 @@ class WatchListSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Name and description should not be the same.')
         else:
             return data
+        
+class StreamPlatformSerializers(serializers.ModelSerializer):
+    watchlist = WatchListSerializer(many=True, read_only=True)
+    class Meta:
+        model = StreamPlatform
+        fields = "__all__"
 
 # def name_length(value):
 #     if len(value) < 2:
