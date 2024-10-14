@@ -8,7 +8,15 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import generics, mixins
 
-# class based view
+# class based view with generic methods
+
+class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
 
 class ReviewList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Review.objects.all()
