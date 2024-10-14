@@ -1,7 +1,14 @@
 from rest_framework import serializers
-from imdb_list.models import WatchList, StreamPlatform
+from imdb_list.models import WatchList, StreamPlatform, Review
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = "__all__"
 
 class WatchListSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
+    
     len_name = serializers.SerializerMethodField()
     class Meta:
         model = WatchList
