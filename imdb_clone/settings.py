@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'imdb_list',
+    'user_app',
 ]
 
 MIDDLEWARE = [
